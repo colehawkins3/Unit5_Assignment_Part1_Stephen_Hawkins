@@ -7,7 +7,7 @@
 	and/or legitimate user error. 
 	//Try and Catch blocks are used in error checking
 	Teacher: Dr. Tyson McMillan, Ph.D.  
-  STUDENT (McMillanite):
+  STUDENT Hawkins: 2/14/20
 */
 #include <cstdlib>  // Provides EXIT_SUCCESS
 #include <iostream>  // Provides cout, cerr, endl
@@ -15,94 +15,89 @@
                               // Extended 2-11-2016 by Dr. McMillan to add validation methods by datatype
 #include<string> //for string manipulation
 #include<sstream> //for string manipulation and comparison
+#include<locale>
+#include <iomanip>
 using namespace std;
 
-int main()
+double weeklyPay(double, double,string,int);
+
+int main( )
+{    
+  cout << fixed << setprecision(2); 
+  cout << weeklyPay (47.0, 505.75,"Cole",1) << endl;
+  cout << endl;
+  cout << weeklyPay (45.0, 55.25,"Melivin",1) << endl;
+  cout << endl;
+  cout << weeklyPay (15, 65.25,"Susan",2) << endl;
+  cout << endl;
+  cout << weeklyPay (41, 14.75,"Mika",1) << endl;  
+  cout << endl; 
+  cout << weeklyPay (25, 15.0,"Eldridge",2) << endl; 
+  cout << endl; 
+  cout << weeklyPay (55, 203.50,"Freedom",1) << endl; 
+  cout << endl;
+  cout << weeklyPay (32.5, 100.25,"Tyson(Dr_T)",1) << endl;    
+  return 0;
+}
+
+
+double weeklyPay(double hours, double rate, string name, int empType)
 {
-   //***********Validating int data type******************/
-	int input = 0;
-	input = validateInt(input); //validate my integer by function call, save that value into input
-    cout << "You entered valid int: " << input << endl;
-    
-	/****************Extend code to Validate double (follow int pattern)**********/
-	double inputDouble = 0.0;
-  	inputDouble = validateDouble(inputDouble); //validate my double by function call, save that value into inputDouble
-    cout << "You entered valid double: " << inputDouble << endl;
+  double netPay = 0.0, grossPay = 0.0, taxableWages = 0.0;
+  double ss = 0.062, med = 0.0145, sSwages = 0.0, medWages = 0.0;
+  double FIT = 0.0, fitTax = 0.0, dental = 0.0, retirement = 0.0;
+  double clockHours = 40.0, overtimeRate = 2.0, overTimeIfAny = 0.0;
+  int emptype = 0;
 
-	/****************Extend code to Validate char (follow int pattern)**********/
-	char inputChar = '\0'; //{0}
-	inputChar = validateChar(inputChar); //validate my char by function call, save that value into inputChar
-    cout << "You entered valid char: " << inputChar << endl;
+  locale loc; 
+  string status = ""; 
+  string reset = "\x1b[0m";
+  string color = "\x1b[" + to_string(91) + ";4m";
 
-	/****************Extend code to Validate string (follow int pattern, if possible)**********/
-	string inputString = (""); 
-	inputString = validateString(inputString); //validate my string by function call, save that value into inputString
-    cout << "You entered string: " << inputString << endl;
+  cout << color << endl; 
+  for(int i = 0; i < name.length(); i++ )
+  {
+    cout << toupper(name[i],loc); 
+  }
+  cout << reset << endl;
 
-	/****************Extend code to Validate if truly an int and greater than 77 **********/
-	int input2 = 0;
-	
-	do
-	{
-		cout << "Enter an integer greater than 77." << endl;  
-		input2 = validateInt(input2); //validate my integer by function call, save that value into input
-		
-		if(input2 < 77)
-		{
-			cout << "\nInvalid input: (" << input2 <<") number must be greater than 77." << endl;
-		}
-	}
-	while(input2 < 77); //loop until input2 is greather than 77
+  status = (empType == 1) ? "Fulltime" : "Parttime"; 
+  cout << "\nStatus: " << status << endl; 
+  cout <<"Standard Pay Rate: "<< rate << endl;
+  cout << "Hours Worked: " << hours << endl; 
 
-    cout << "You entered valid int: " << input2 << endl;
+  overTimeIfAny = ((hours - clockHours) > 0.0) ? (hours - clockHours) : 0.0;  
+  if(empType == 1) 
+  {
+    cout << "Overtime Hours: " << overTimeIfAny << endl; 
+  }
 
-	/****************Extend code to Validate if truly an double and greater than 0.00 **********/
-	double inputDouble2 = 0.0;
-	
-	do
-	{
-		cout << "Enter an number greater than 0."<< endl; 
-		inputDouble2 = validateDouble(inputDouble2); //validate my integer by function call, save that value into input
-		
-		if(inputDouble2 < 0)
-		{
-			cout << "\nInvalid input: (" << inputDouble2 <<") number must be greater than 0." << endl;
-		}
-	}
-	while(inputDouble2 < 0); //loop until inputDouble2 is greather than 0
+  FIT = (rate < 15.0) ? 0.12 : 0.15; 
+  cout << "FIT Rate: " << FIT << endl; 
+  dental = (empType == 1) ? 17.00 : 0.00;
+  retirement = (empType == 1) ? 77.00 : 0.00;
+  
 
-    cout << "You entered valid double: " << inputDouble2<< endl;
-    //A program to output grade values
-   //based upon numberical input of the user yourName: Teacher: Dr_T 8-28-2019
-   double grade = 0.0; 
-   do
-   { // begin do 
-      cout << "\nPlease enter a numerical grade (-1 to exit): ";
-      grade = validateDouble(grade); //accept grade and validate the data type
-      //if condition test
-      if(grade >= 90.0)
-      {
-        cout << "\nThat's an A!" << endl; 
-      }
-      else if(grade >= 80.0 && grade <= 89.9)
-      {
-        cout << "\nThat's a B!" << endl; 
-      }
-      else if(grade >= 70.0 && grade <= 79.9)
-      {
-        cout << "\nThat's a C!" << endl; 
-      }
-      else if(grade >= 60.0 && grade <= 69.9)
-      {
-        cout << "\nYikes. That's a D!" << endl; 
-      }
-      else if(grade < 60.0)
-      {
-        cout << "\nSee you next semester: F" << endl; 
-      }
-      else {cout << "\nInvalid input." << endl;}
+  grossPay = (hours <= clockHours) ? (hours * rate) : 
+  ((clockHours * rate) + ((overTimeIfAny) * (overtimeRate * rate))); 
 
-   }while(grade != -1); //end do 
-   
-    return 0;
+  cout << "Gross Pay: $" << grossPay << endl;
+  taxableWages = grossPay - (dental + retirement);
+  fitTax = taxableWages * FIT;  
+  
+  sSwages = grossPay * ss; 
+  medWages =  grossPay * med; 
+ 
+  cout << "\nPreTax Deductions: " << endl; 
+  cout << "Dental Deduction = $" << dental <<endl;
+  cout << "Retirement Deduction = $" << retirement << endl;
+  cout << "Taxable Wages = $" << taxableWages << endl; 
+  cout << "\nDeductions: " << endl; 
+  cout << "FIT Tax Amount = $" << fitTax << endl; 
+  cout << "Social Security Deductions = $" << sSwages<< endl;
+  cout << "Medicare Deductions = $" << medWages << endl;
+  netPay = grossPay - (dental + retirement + fitTax + sSwages + medWages); 
+  cout << "Net Pay for " << name << " = $"; 
+
+  return netPay; 
 }
